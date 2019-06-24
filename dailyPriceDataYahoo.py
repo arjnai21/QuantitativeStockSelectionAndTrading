@@ -1,27 +1,28 @@
 from yahoofinancials import YahooFinancials
 import csv
 
-financials = YahooFinancials('AAPL')
-x = financials.get_historical_price_data("2019-01-01", "2019-06-24", "daily")
-val = x['AAPL']["prices"]
-ordering = ['date', 'high','low','open','close','volume','adjclose']
-for i in range(len(val)):
-    newdic = {}
-    for j in ordering:
-        if j == 'date':
-            newdic[j] = val[i]['formatted_date']
-        else:
-            newdic[j] = val[i][j]
+for i in range(5):
+    for ticker in open("tickers.txt"):
+        ticker = ticker.strip('\n')
+        financials = YahooFinancials(ticker)
+        data = financials.get_historical_price_data("2019-01-01", "2019-06-24", "daily")
+        prices = data[ticker]["prices"]
+        ordering = ['date', 'high', 'low', 'open', 'close', 'volume', 'adjclose']
+        for i in range(len(prices)):
+            newdic = {}
+            for j in ordering:
+                if j == 'date':
+                    newdic['Date'] = prices[i]['formatted_date']
+                else:
+                    newdic[ticker + "." + j.title()] = prices[i][j]
 
-    val[i] = newdic
-    del newdic
+            prices[i] = newdic
+            del newdic
 
-keys = val[0].keys()
+        keys = prices[0].keys()
 
+        with open('data/' + ticker + '.csv', 'w', newline='') as file:
+            dict_writer = csv.DictWriter(file, keys)
+            dict_writer.writeheader()
 
-with open('aapl.csv', 'w') as file:
-    dict_writer = csv.DictWriter(file, keys)
-    dict_writer.writeheader()
-
-    dict_writer.writerows(val)
-print(financials.get_historical_price_data("2019-01-01", "2019-06-24", "daily"))
+            dict_writer.writerows(prices)
