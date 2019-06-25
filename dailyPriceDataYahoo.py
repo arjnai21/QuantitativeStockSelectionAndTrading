@@ -1,27 +1,38 @@
 from yahoofinancials import YahooFinancials
 import csv
-import time
+import datetime
+import os
 
-# ZAZZT not working
-financials = YahooFinancials("ZAZZT")
-print(financials.get_stock_data())
-financials = YahooFinancials("AAPL")
-print(financials.get_stock_data())
+not_working = ["ZAZZT", "ZBZZT", "ZXYZ.A", "BRPM.U", "CBX",  "FPAC.W", "GIG.R", "GIG.W", "GIX.U", "GRAF.U", "GSAH.W",
+               "IAA.V", "IBO", "IGZ", "LGC.U", "LGC.W", "MFAC.W", "MOSC.U", "NTEST.C", "PVT.U", "PVT.W", "RMG.W",
+               "SHLL.U", "SPAQ.U", "TRNE.W", "TRNO", "VST.A", "ZTEST"]
+not_right = ["AGM.A", "AKO.A", "AKO.B", "BF.A", "BF.B", "BH.A", "BIO.B", "BRK.A", "BRK.B", "BWL.A", "CBS.A", "CRD.A",
+             "CRD.B", "CWEN.A", "GEF.B", "GTN.A", "HEI.A", "HVT.A", "JW.A", "JW.B", "MKC.V", "MOG.A", "MOG.B", "STZ.B",
+             "TAP.A", "WSO.B"]
+
+start_date = "2019-01-01"
+end_date = datetime.date.today().__str__()
+
+x = 0
 for ticker in open("tickers.txt"):
     ticker = ticker.strip('\n')
-    print(ticker)
+    if ticker in not_right:
+        ticker = ticker.replace('.', '-')
+    print(ticker + " " + str(x))
+    x += 1
+    if ticker in not_working or os.path.isfile("data/" + ticker + ".csv") or ticker[:5] == "ATEST":
+        print("skipped")
+        continue
     financials = YahooFinancials(ticker)
-    start = time.time()
-    data = financials.get_historical_price_data("2019-01-01", "2019-06-24", "daily")
+    data = financials.get_historical_price_data(start_date, end_date, "daily")
     prices = data[ticker]["prices"]
     ordering = ['high', 'low', 'open', 'close', 'volume', 'adjclose']
     for i in range(len(prices)):
-        newdic = {}
-        newdic['Date'] = prices[i]['formatted_date']
+        formatted_dict = {'Date': prices[i]['formatted_date']}
         for j in ordering:
-            newdic[ticker + "." + j.title()] = prices[i][j]
-        prices[i] = newdic
-        del newdic
+            formatted_dict[ticker + "." + j.title()] = prices[i][j]
+        prices[i] = formatted_dict
+        del formatted_dict
 
     keys = prices[0].keys()
 
