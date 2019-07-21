@@ -1,7 +1,6 @@
 from yahoofinancials import YahooFinancials
 import csv
 import datetime
-import os
 
 # stock tickers that have no data
 not_working = ["ZAZZT", "ZBZZT", "ZXYZ.A", "BRPM.U", "CBX",  "FPAC.W", "GIG.R", "GIG.W", "GIX.U", "GRAF.U", "GSAH.W",
