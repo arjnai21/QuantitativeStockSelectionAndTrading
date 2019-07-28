@@ -2,6 +2,12 @@ from yahoofinancials import YahooFinancials
 import csv
 import datetime
 
+"""
+IMPORTANT
+
+Must first run the program "getStockTickers" in order to have a file named "tickers.txt" in the directory
+"""
+
 # stock tickers that have no data
 not_working = ["ZAZZT", "ZBZZT", "ZXYZ.A", "BRPM.U", "CBX",  "FPAC.W", "GIG.R", "GIG.W", "GIX.U", "GRAF.U", "GSAH.W",
                "IAA.V", "IBO", "IGZ", "LGC.U", "LGC.W", "MFAC.W", "MOSC.U", "NTEST.C", "PVT.U", "PVT.W", "RMG.W",
