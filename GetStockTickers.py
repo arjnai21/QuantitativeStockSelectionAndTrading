@@ -6,6 +6,7 @@ import ftplib
 import os
 import re
 
+
 def getTickers():
 
         # Connect to ftp.nasdaqtrader.com

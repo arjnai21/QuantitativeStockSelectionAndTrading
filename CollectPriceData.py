@@ -1,6 +1,7 @@
 from yahoofinancials import YahooFinancials
 import csv
 import datetime
+import os
 
 """
 IMPORTANT
@@ -20,9 +21,11 @@ def collectData():
                  "CRD.B", "CWEN.A", "GEF.B", "GTN.A", "HEI.A", "HVT.A", "JW.A", "JW.B", "MKC.V", "MOG.A", "MOG.B", "STZ.B",
                  "TAP.A", "WSO.B"]
 
-
     start_date = "2019-01-01"
     end_date = datetime.date.today().__str__()
+
+    if not os.path.exists('data'):
+        os.mkdir('data')
 
     for ticker in open("tickers.txt"):
         ticker = ticker.strip('\n')
@@ -50,6 +53,7 @@ def collectData():
             prices[i] = formatted_dict
 
         keys = prices[0].keys()
+
 
         # write prices dictionary to csv file
         with open('data/' + ticker + '.csv', 'w', newline='') as file:
