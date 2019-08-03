@@ -1,4 +1,5 @@
 # taken directly from https://www.xavignu.com/?p=1152
+# slight modification to
 
 
 #!/usr/bin/env python
@@ -24,5 +25,8 @@ def getTickers():
                 for line in localfile:
                         if re.search("Common Stock", line):
                                 ticker = line.split("|")[0]
+                                if ticker == "ACAMU":
+                                        x = 0
                                 # Append tickers to file tickers.txt
                                 open("tickers.txt","a+").write(ticker + "\n")
+
