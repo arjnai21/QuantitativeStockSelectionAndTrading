@@ -34,11 +34,8 @@ def collectData():
         if ticker in not_right:
             ticker = ticker.replace('.', '-')
 
-        print("Current Ticker:", ticker)
-
         # if ticker has no data. All tickers that begin with 'ATEST' or 'CTEST' have no data
         if ticker in not_working or ticker[:5] == "ATEST" or ticker[:5] == "CTEST":
-            print("skipped")
             continue
 
         # collect historical data for ticker
