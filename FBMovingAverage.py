@@ -2,7 +2,9 @@ import quandl
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
-df = quandl.get('WIKI/FB')
+
+ticker = "FB"
+df = quandl.get('WIKI/' + ticker)
 df["MA5"] = df['Close'].rolling(5).mean()
 df["MA10"] = df['Close'].rolling(10).mean()
 with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelection\FBMovingAverage.pdf') as export_pdf:
