@@ -8,7 +8,7 @@ import numpy as np
 # https://www.jasonlee.mobi/projects/2018/5/18/building-a-momentum-trading-strategy-using-python
 
 ticker = "FB"
-df = quandl.get('WIKI/' + ticker, api_key="insert api key")
+df = quandl.get('WIKI/' + ticker, api_key="T2K2v57vDVL9Wwx_ia3c")
 df["MA5"] = df['Close'].rolling(5).mean()
 df["MA20"] = df['Close'].rolling(20).mean()
 
@@ -54,6 +54,6 @@ for i in range(len(signals['positions'])):
 plt.legend(loc="best")
 plt.xlabel("Date")
 plt.ylabel("Price")
-with PdfPages(r"insert file path") as export_pdf:
+with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\FBGoldenCross.pdf') as export_pdf:
     export_pdf.savefig()
     plt.close()
