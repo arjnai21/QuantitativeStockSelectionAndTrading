@@ -1,5 +1,7 @@
 import statistics
 import math
+import random
+
 def yr_vol(val, daily_scale=252):
     daily_percent_change = [((val[i] - val[i-1]) / val[i-1]) for i in range(1, len(val))]
     return statistics.pstdev(daily_percent_change) * math.sqrt(daily_scale)
@@ -16,13 +18,12 @@ def max_drawdn(val):
     peaks.append(len(val) + 1) # slicing purposes
     max_drawdn = 0
     for i in range(len(peaks)-1):
-        testing = val[peaks[i]:peaks[i+1]]
+
         drawdn = val[peaks[i]] - min(val[peaks[i]:peaks[i+1]]) # search from peak to peak for minum
         if drawdn > max_drawdn:
             max_drawdn = drawdn
-            print(max_drawdn)
 
-    return max_drawdn # CURRENTLY PRICE DROP NOT PERCENTAGE
+    return max_drawdn
 
 
 
@@ -62,10 +63,9 @@ def read_stock_into_list(filename):
     with open(filename) as f:
         lines = [float(i) for i in f.readlines()]
     return lines
-
 data = read_stock_into_list("StockX.txt")
-print(min(data))
-trade = ma_trade(data)
-print(price2invest(data, trade, 46570))
+
 print(yr_vol(data))
 print(max_drawdn(data))
+print(ma_trade(data))
+print(price2invest(data, [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0]))
