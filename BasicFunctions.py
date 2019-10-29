@@ -46,7 +46,7 @@ def ma_trade(price, ma_fast=5, ma_slow=10):
 def price_2_invest(price, i_hold, cash=-1):
     if cash == -1:
         cash = price[0]
-        values = []
+    values = []
     num_shares = 0
     for i in range(len(price)):
         if i_hold[i] == 0 and i !=0 and i_hold[i-1] == 1:
@@ -79,10 +79,10 @@ def graph_price_2_invest(price, ma_fast=5, ma_slow=10, cash=-1):
     ma_slow_values = get_moving_avg(price, ma_slow)
     fig = plt.figure()
     ax = plt.axes()
-    ax.plot(price, label="Stock price")  # price_line
+    ax.plot(price, label="Stock price", color="blue")  # price_line
     ax.plot(price2invest, label="Holding value", color="black")  # holding_line
-    ax.plot(ma_slow_values, label="MA_Slow")  # ma_slow_line
-    ax.plot(ma_fast_values, label="MA Fast")  # ma_fast_line
+    ax.plot(ma_slow_values, label="MA_Slow", color="green")  # ma_slow_line
+    ax.plot(ma_fast_values, label="MA Fast", color="red")  # ma_fast_line
     ax.legend()
     fig.show()
 
