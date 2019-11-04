@@ -75,7 +75,7 @@ def get_moving_avg(price, freq):
     return ma
 
 
-def graph_price_2_invest(price, ma_fast=5, ma_slow=60, cash=None):
+def graph_price_2_invest(price, ma_fast=5, ma_slow=10, cash=None):
     trade = ma_trade(price, ma_fast, ma_slow)
     price2invest = price_2_invest(price, trade, cash)
     ma_fast_values = get_moving_avg(price, ma_fast)
@@ -90,7 +90,7 @@ def graph_price_2_invest(price, ma_fast=5, ma_slow=60, cash=None):
     fig.show()
 
 
-data = read_stock_into_list("StockX.txt")
+data = read_stock_into_list("StockY.txt")
 # randomly generated list of 1s and 0s
 hold = [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
         1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0,
@@ -99,6 +99,22 @@ hold = [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 
         0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0,
         0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
         1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0]
+
+
+def chooseBetterStrategy(ma_fast_1, ma_slow_1, ma_fast_2, ma_slow_2, price):
+    value = []
+    use_first_option = True
+    for i in range(0, len(price), 30):
+        tradePossibilites = [ma_trade(price[i:i+30], ma_fast_1, ma_slow_1), ma_trade(price[i:i+30], ma_fast_2, ma_slow_2)]
+        returns = [price_2_invest(price[i:i+30], tradePossibilites[0]), price_2_invest(price[i:i+30], tradePossibilites[1])]
+        if use_first_option:
+            value += returns[0]
+        else:
+            value += returns[1]
+        cum_returns = [(returns[0][-1] - returns[0][0]) / returns[0][0], (returns[1][-1] - returns[1][0]) / returns[1][0]]
+        use_first_option = cum_returns[0] > cum_returns[1]
+
+
 print(yr_vol(data))
 print(yr_rtn(data))
 print(max_drawdn(data))
