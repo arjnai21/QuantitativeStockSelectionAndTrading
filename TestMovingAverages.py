@@ -7,8 +7,8 @@ import numpy
 
 
 moving_averages = [5, 7, 9, 11, 13, 15, 17, 19, 21]
-months = ["", "January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"]
+months = ["", "January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December"]
 
 ticker = "FB"
 df = quandl.get('WIKI/' + ticker, api_key="T2K2v57vDVL9Wwx_ia3c")
