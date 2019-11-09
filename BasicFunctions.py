@@ -114,11 +114,3 @@ def chooseBetterStrategy(ma_fast_1, ma_slow_1, ma_fast_2, ma_slow_2, price):
         cum_returns = [(returns[0][-1] - returns[0][0]) / returns[0][0], (returns[1][-1] - returns[1][0]) / returns[1][0]]
         use_first_option = cum_returns[0] > cum_returns[1]
 
-
-print(yr_vol(data))
-print(yr_rtn(data))
-print(max_drawdn(data))
-print(ma_trade(data))
-print(price_2_invest(data, hold))
-print(get_moving_avg(data, 60))
-graph_price_2_invest(data)
