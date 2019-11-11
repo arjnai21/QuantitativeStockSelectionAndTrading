@@ -1,27 +1,28 @@
 import calendar
 import datetime
 import quandl
+from matplotlib.backends.backend_pdf import PdfPages
 from BasicFunctions import *
 import matplotlib.pyplot as plt
 import numpy
 
 
 moving_averages = [5, 7, 9, 11, 13, 15, 17, 19, 21]
+combination_keys = [(moving_averages[i], moving_averages[j]) for i in range(len(moving_averages)) for j in range(i+1, len(moving_averages))]
+combination_dict = {}
+for i in combination_keys:
+    combination_dict[i]= []
 months = ["", "January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December"]
 
-ticker = "FB"
+ticker = "C"
 df = quandl.get('WIKI/' + ticker, api_key="T2K2v57vDVL9Wwx_ia3c")
 
-
-df["Close"][datetime.date(2013, 1, 1):datetime.date(2015, 1, 1)].plot()
-
-plt.show()
 best_yearly_performances = []
 best_yearly_averages = []
 best_total_averages = []
 best_total_performances = []
-for year in range(2013, 2015):
+for year in range(1977, 2018):
     best_yearly_performance = -float('inf')
     best_yearly_config = []
     best_monthly_performances = []
@@ -36,6 +37,7 @@ for year in range(2013, 2015):
                 trade = ma_trade(dataset, moving_averages[i], moving_averages[j])
                 hold = price_2_invest(dataset, trade)
                 performance = ((hold[-1] - hold[0]) / hold[0]) * 100  # percentage
+                combination_dict[(moving_averages[i], moving_averages[j])].append(performance)
                 if performance > best_monthly_performance:
                     best_monthly_performance = performance
                     best_monthly_config = [moving_averages[i], moving_averages[j]]
@@ -61,8 +63,10 @@ for year in range(2013, 2015):
     best_yearly_performances.append(best_yearly_performance)
     best_yearly_averages.append(best_yearly_config)
 
-yur = 0
+for i in combination_dict.keys():
+    plt.plot(combination_dict[i], label=str(i))
 
+plt.show()
 """
 best yearly performances:
 list containing the largest percent gain in each year
@@ -79,5 +83,4 @@ NOTE:
 best yearly performances should select the max of each of the yearly lists in best total averages
 best yearly averages should select the best of each of the yearly lists in best total averages, which correspond to the best performances for that year
 """
-
 
