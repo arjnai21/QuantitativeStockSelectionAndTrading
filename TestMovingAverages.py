@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy
 
 
-moving_averages = [5, 7, 9, 11, 13, 15, 17, 19, 21]
+moving_averages = [5, 10, 20]
 combination_keys = [(moving_averages[i], moving_averages[j]) for i in range(len(moving_averages)) for j in range(i+1, len(moving_averages))]
 combination_dict = {}
 for i in combination_keys:
@@ -63,10 +63,21 @@ for year in range(1977, 2018):
     best_yearly_performances.append(best_yearly_performance)
     best_yearly_averages.append(best_yearly_config)
 
+fig = plt.figure(figsize=(20, 3))
+ax = fig.add_subplot(111)
 for i in combination_dict.keys():
-    plt.plot(combination_dict[i], label=str(i))
+    ax.plot(combination_dict[i], label=str(i))
 
+days = len(combination_dict[combination_keys[0]])
+plt.legend()
+plt.xticks(range(0, days, 10))
+# plt.figure(figsize=(20, 2))
+# plt.tight_layout()
 plt.show()
+with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\MovingAverageTest.pdf') as export_pdf:
+    export_pdf.savefig(fig)
+    plt.close()
+
 """
 best yearly performances:
 list containing the largest percent gain in each year
