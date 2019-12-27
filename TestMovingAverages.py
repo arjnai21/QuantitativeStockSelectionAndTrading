@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy
 
 
-moving_averages = [5, 10, 20]
+moving_averages = [5, 10, 15, 20]
 combination_keys = [(moving_averages[i], moving_averages[j]) for i in range(len(moving_averages)) for j in range(i+1, len(moving_averages))]
 combination_dict = {}
 for i in combination_keys:
@@ -18,6 +18,14 @@ months = ["", "January", "February", "March", "April", "May", "June", "July",
 ticker = "C"
 df = quandl.get('WIKI/' + ticker, api_key="T2K2v57vDVL9Wwx_ia3c")
 
+# make it continuous dont start over each month
+# run it over whole month and then check stats
+# also run s&p 500
+# for each combination graph the curve for portfolio value
+# for each combination send the portfolio value curve
+# combination map to vector of portfolio value
+# calculate annualized return for a bunch of stuff
+# graph show plot as annualized return
 best_yearly_performances = []
 best_yearly_averages = []
 best_total_averages = []
@@ -63,6 +71,7 @@ for year in range(1977, 2018):
     best_yearly_performances.append(best_yearly_performance)
     best_yearly_averages.append(best_yearly_config)
 
+#graphing
 fig = plt.figure(figsize=(20, 3))
 ax = fig.add_subplot(111)
 for i in combination_dict.keys():
@@ -74,9 +83,9 @@ plt.xticks(range(0, days, 10))
 # plt.figure(figsize=(20, 2))
 # plt.tight_layout()
 plt.show()
-with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\MovingAverageTest.pdf') as export_pdf:
-    export_pdf.savefig(fig)
-    plt.close()
+# with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\MovingAverageTest.pdf') as export_pdf:
+#     export_pdf.savefig(fig)
+#     plt.close()
 
 """
 best yearly performances:
