@@ -19,13 +19,19 @@ months = ["", "January", "February", "March", "April", "May", "June", "July",
 ticker = "C"
 df = quandl.get('WIKI/' + ticker, api_key="T2K2v57vDVL9Wwx_ia3c")
 dates = df["Close"].keys()
+date = str(datetime.date(2011, 4, 7))
+date2 = str(datetime.date(2011, 6, 15))
+print(type(df["Close"][date]))
+print(df["Close"][str(datetime.date(2011, 4, 8))])
+relevant_data = df["Close"][:date]
+# print(relevant_data[str(datetime.date(2011, 6, 15))])
 trades = []
 holds = []
 
 for i in combination_keys:
     performance_dict[i] = []
-    trades_dict[i] = ma_trade(df["Close"], i[0], i[1])
-    holds_dict[i] = price_2_invest(df["Close"], trades_dict[i])
+    trades_dict[i] = ma_trade(relevant_data, i[0], i[1])
+    holds_dict[i] = price_2_invest(relevant_data, trades_dict[i])
 
 i = 0
 firstDayMarker = 0
@@ -59,7 +65,7 @@ for i in performance_dict.keys():
 days = len(performance_dict[combination_keys[0]])
 fig.legend()
 fig.show()
-fig.savefig('MovingAverageTestContinuousMay')
-# with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\MovingAverageTestContinuous.pdf') as export_pdf:
-#     export_pdf.savefig(fig)
-#     plt.close()
+fig.savefig('MovingAverageTestContinuousWithoutOutlier')
+with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\MovingAverageTestContinuousWithoutOutlier.pdf') as export_pdf:
+    export_pdf.savefig(fig)
+    plt.close()
