@@ -36,36 +36,48 @@ for i in combination_keys:
 i = 0
 firstDayMarker = 0
 largestIndex = 0
+running_hold = []
 while i < len(holds_dict[combination_keys[0]]):
     date = dates[i].to_pydatetime()
     if i != 0 and date.month != dates[i-1].to_pydatetime().month:
+        highest_performance = -float("inf")
+        highest_performance_hold = 0
+        best_strategy = (0, 0)
         # go from firstDayMarker to i-1
         for j in combination_keys:
             hold_value_at_end_of_month = holds_dict[j][i-1]
             hold_value_at_start_of_month = holds_dict[j][firstDayMarker]
             performance = ((hold_value_at_end_of_month - hold_value_at_start_of_month) / hold_value_at_start_of_month) * 100  # percentage
+            if performance > highest_performance:
+                highest_performance = performance
+                highest_performance_hold = hold_value_at_end_of_month
             performance_dict[j].append(performance)
             if performance > 800:
                 largestIndex = i
+        running_hold.append(highest_performance_hold)
+
         firstDayMarker = i
+
     i += 1
-print(max(performance_dict[(10, 20)]))
-print(performance_dict[(10, 20)].index((max(performance_dict[(10, 20)]))))
-#print(len(dates))
-print(dates[largestIndex])
-print(largestIndex / 20)
-print(holds_dict)
+# print(max(performance_dict[(10, 20)]))
+# print(performance_dict[(10, 20)].index((max(performance_dict[(10, 20)]))))
+# print(dates[largestIndex])
+# print(largestIndex / 20)
+# print(holds_dict)
 # print(dates[int(performance_dict[(10, 20)].index((max(performance_dict[(10, 20)]))) * (365/12))])
 #graphing
+
 fig = plt.figure(figsize=(20, 3))
 ax = fig.add_subplot(111)
 for i in performance_dict.keys():
     ax.plot(performance_dict[i], label=str(i))
 
+ax.plot(running_hold, label = "running hold")
+
 days = len(performance_dict[combination_keys[0]])
 fig.legend()
 fig.show()
 fig.savefig('MovingAverageTestContinuousWithoutOutlier')
-with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\MovingAverageTestContinuousWithoutOutlier.pdf') as export_pdf:
+with PdfPages(r'C:\Users\arjun\PycharmProjects\QuantitativeStockSelectionAndTrading\MovingAverageTestContinuousWithHold.pdf') as export_pdf:
     export_pdf.savefig(fig)
     plt.close()

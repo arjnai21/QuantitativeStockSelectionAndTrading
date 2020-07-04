@@ -1,5 +1,5 @@
-from CollectPriceData import collectData
-from GetStockTickers import getTickers
+from oldstuff.CollectPriceData import collectData
+from oldstuff.GetStockTickers import getTickers
 
 """
 This file completes the entire task

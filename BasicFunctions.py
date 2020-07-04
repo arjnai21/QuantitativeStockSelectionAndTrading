@@ -32,6 +32,7 @@ def max_drawdn(val):
 
 
 def ma_trade(price, ma_fast=5, ma_slow=10):
+    waitDay = False
     ret = []
     for i in range(ma_slow):
         ret.append(0)
@@ -39,8 +40,13 @@ def ma_trade(price, ma_fast=5, ma_slow=10):
         fast_avg = sum(price[i - ma_fast:i]) / ma_fast
         slow_avg = sum(price[i - ma_slow:i]) / ma_slow
         if fast_avg > slow_avg:
-            ret.append(1)
+            if waitDay:
+                ret.append(1)
+            else:
+                waitDay = True
+                ret.append(0)
         else:
+            waitDay = False
             ret.append(0)
     return ret
 
@@ -75,7 +81,7 @@ def get_moving_avg(price, freq):
     return ma
 
 
-def graph_price_2_invest(price, ma_fast=5, ma_slow=10, cash=None):
+def graph_price_2_invest(price, ma_fast=5, ma_slow=10, cash=None, file=None):
     trade = ma_trade(price, ma_fast, ma_slow)
     price2invest = price_2_invest(price, trade, cash)
     ma_fast_values = get_moving_avg(price, ma_fast)
@@ -84,21 +90,23 @@ def graph_price_2_invest(price, ma_fast=5, ma_slow=10, cash=None):
     ax = plt.axes()
     ax.plot(price, label="Stock price", color="blue")  # price_line
     ax.plot(price2invest, label="Holding value", color="black")  # holding_line
-    ax.plot(ma_slow_values, label="MA Slow", color="green")  # ma_slow_line
-    ax.plot(ma_fast_values, label="MA Fast", color="red")  # ma_fast_line
+    ax.plot(ma_slow_values, label="MA " + str(ma_slow), color="green")  # ma_slow_line
+    ax.plot(ma_fast_values, label="MA " + str(ma_fast), color="red")  # ma_fast_line
     ax.legend()
     fig.show()
+    if not (file is None):
+        fig.savefig(file)
 
 
-data = read_stock_into_list("StockY.txt")
-# randomly generated list of 1s and 0s
-hold = [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-        1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0,
-        1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0,
-        1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1,
-        0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0,
-        0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
-        1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0]
+# data = read_stock_into_list("StockY.txt")
+# # randomly generated list of 1s and 0s
+# hold = [0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+#         1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0,
+#         1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0,
+#         1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1,
+#         0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0,
+#         0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
+#         1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0]
 
 
 def chooseBetterStrategy(ma_fast_1, ma_slow_1, ma_fast_2, ma_slow_2, price):
