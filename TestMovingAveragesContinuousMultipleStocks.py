@@ -19,6 +19,7 @@ months = ["", "January", "February", "March", "April", "May", "June", "July",
 tickers = ["JPM", "GS", "AXP", "BAC"]
 ticker_to_performance_dict = {}
 for ticker in tickers:
+    quandl.get_table()
     df = quandl.get('WIKI/' + ticker, api_key="T2K2v57vDVL9Wwx_ia3c")
     dates = df["Close"].keys()
     date = str(datetime.date(2011, 4, 7))

@@ -28,7 +28,7 @@ def max_drawdn(val):
         if drawdn > max_drawdown:
             max_drawdown = drawdn
 
-    return max_drawdown
+    return -max_drawdown
 
 
 def ma_trade(price, ma_fast=5, ma_slow=10):
